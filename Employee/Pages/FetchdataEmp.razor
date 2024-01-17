@@ -1,0 +1,73 @@
+﻿@page "/fetchdataEmp"
+<PageTitle>Employee List</PageTitle>
+
+@using Employee.Models;
+@using Employee.Data;
+@inject EmployeeService EmployeeService;
+@inject NavigationManager NavigationManager;
+
+<h1>Employee List</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+<span style="display: inline-block; margin-right: 10px;"><a href="insert" class="btn btn-primary">INSERT</a></span>
+<span style="display: inline-block; margin-right: 10px;"><a href="getDeletedRecords" class="btn btn-primary">Deleted Records</a></span>
+
+
+@if (Employees == null)
+{
+    <p><em>Fetching data...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Department Name</th>
+                <th>Age</th>
+                <th>Salary</th>
+               @*  <th>Skills</th> *@
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Employees.Any())
+            {
+                @foreach (var forecast in Employees)
+                {
+                    <tr>
+                        <td>@forecast.EmpID</td>
+                        <td>@forecast.EName</td>
+                        <td>@forecast.DeptName</td>
+                        <td>@(forecast.Age)</td>
+                        <td>@(forecast.Salary)</td>
+                       @*  <td>@(forecast.Skills!=null ? forecast.Salary.ToString() : "N/A")</td> *@
+                        <button type="button" class="btn" @onclick="() => DeleteEmployee(forecast.EmpID)">Delete</button>
+                        @* <button class="btn btn-success" @onclick="() => UpdateEmployee(forecast.EmpID,forecast.EName,forecast.DeptName,forecast.Age, forecast.Salary,forecast.Skills)">Update</button> *@
+                        <button type="button" class="btn" @onclick="() => UpdateEmployee(forecast.EmpID)">Update</button>
+                        <button type="button" class="btn" @onclick="() => DetailEmployee(forecast.EmpID)">Details</button>
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@* @code {
+    private List<GetAllEmployeesResult>? Employees; // Remove nullable operator
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = await EmployeeService.Get();
+    }
+
+
+}  *@

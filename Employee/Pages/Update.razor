@@ -1,0 +1,95 @@
+﻿@page "/update/{EmpId:int}"
+@using Employee.Models
+@using Employee.Data
+@inject EmployeeService EmployeeService
+@inject NavigationManager NavigationManager
+
+<h3>Update Employee</h3>
+
+@if (employee != null)
+{
+    <form>
+        <!-- Form fields for editing employee details -->
+        <div class="form-group">
+            <label for="editEmployeeName">Employee Name:</label>
+            <input id="editEmployeeName" @bind="employee.EName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="editEmployeeDept">Department:</label>
+            <input id="editEmployeeDept" @bind="employee.DeptName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="editEmployeeAge">Age:</label>
+            <input id="editEmployeeAge" @bind="employee.Age" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="editEmployeeSalary">Salary:</label>
+            <input id="editEmployeeSalary" @bind="employee.Salary" class="form-control" />
+        </div>
+
+       @*  <div class="form-group">
+            <label for="editEmployeeSkills">Skills:</label>
+            <input id="editEmployeeSkills" @bind="employee.Skills" class="form-control" />
+        </div> *@
+
+        <button type="button" class="btn btn-primary" @onclick="UpdateEmployee">Update Employee</button>
+    </form>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private GetEmployeeByIdResult employee;
+
+    [Parameter]
+    public int EmpId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Fetch the employee data when the component is initialized
+            employee = await EmployeeService.GetEmpByID(EmpId);
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception, for example, navigate to an error page
+            Console.WriteLine($"Error fetching employee data: {ex.Message}");
+        }
+    }
+
+    private async Task UpdateEmployee()
+    {
+        try
+        {
+            // Update employee details using the EmployeeService
+            int result = await EmployeeService.Update(
+                employee.EmpID,
+                employee.EName,
+                employee.DeptName,
+                employee.Age,
+                employee.Salary,
+                employee.Skills);
+            NavigationManager.NavigateTo("/fetchdataEmp");
+            if (result > 0)
+            {
+                // Successful update, navigate to employee list page
+                NavigationManager.NavigateTo("/fetchdataEmp");
+            }
+            else
+            {
+                // Handle failure scenario
+                Console.WriteLine("Update failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating employee: {ex.Message}");
+        }
+    }
+}

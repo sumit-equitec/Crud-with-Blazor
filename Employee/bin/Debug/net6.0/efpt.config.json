@@ -1,0 +1,105 @@
+﻿{
+   "CodeGenerationMode": 3,
+   "ContextClassName": "DapperDBContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Employee",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Employee]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DeletedRecords]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DeleteEmployee]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAllEmployees]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetBackDeletedRecord]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetDeletedRecords]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEmployeeBy]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetEmployeeById]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetPagedCount]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetPagedEmp]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetPagedEmployee]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InsertEmployee]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SoftDeleteRecord]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UpdateEmp]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UpdateEmployee]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UpdateEmployeee]",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": "bhim.DapperDB.dbo",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

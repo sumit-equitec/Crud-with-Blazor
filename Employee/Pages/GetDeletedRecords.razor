@@ -1,0 +1,75 @@
+﻿@page "/getDeletedRecords"
+
+@using Employee.Models;
+@using Employee.Data;
+@inject EmployeeService EmployeeService;
+@inject NavigationManager NavigationManager;
+
+<h3>GetDeletedRecords</h3>
+
+@if (Employees == null)
+{
+    <p><em>Fetching data...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Department Name</th>
+                <th>Age</th>
+                <th>Salary</th>
+                @*  <th>Action</th> *@
+            </tr>
+        </thead>
+        <tbody>
+            @if (Employees.Any())
+            {
+                @foreach (var forecast in Employees)
+                {
+                    <tr>
+                        <td>@forecast.EmpID</td>
+                        <td>@forecast.EName</td>
+                        <td>@forecast.DeptName</td>
+                        <td>@(forecast.Age.HasValue ? forecast.Age.ToString() : "N/A")</td>
+                        <td>@(forecast.Salary.HasValue ? forecast.Salary.ToString() : "N/A")</td>
+                        <button type="button" class="btn" @onclick="() => GetBack(forecast.EmpID)">Restore</button>
+
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<GetDeletedRecordsResult>? Employees; // Remove nullable operator
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = await EmployeeService.GetDeleted();
+    }
+
+    private async Task GetBack(int employeeId)
+    {
+        // Show confirmation dialog if needed...
+
+        // Call the DeleteEmployeeAsync method from EmployeeService
+        int affectedRows = await EmployeeService.GetBackEmployee(employeeId);
+
+        // After deletion, refresh the employee list
+
+        NavigationManager.NavigateTo("/fetchdataEmp");
+
+    }
+
+} 

@@ -1,0 +1,64 @@
+﻿@page "/insert"
+<PageTitle>Employee List</PageTitle>
+
+@using Employee.Models;
+@using Employee.Data;
+@inject EmployeeService EmployeeService;
+@inject NavigationManager NavigationManager;
+
+<form>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" @bind="NewEmployee.Ename" />
+    </div>
+    <div class="form-group">
+        <label for="department">Department:</label>
+        <input type="text" class="form-control" id="department" @bind="NewEmployee.DeptName" />
+    </div>
+    <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" class="form-control" id="age" @bind="NewEmployee.Age" />
+    </div>
+    <div class="form-group">
+        <label for="salary">Salary:</label>
+        <input type="number" class="form-control" id="salary" @bind="NewEmployee.Salary" />
+    </div>
+   @*  <div class="form-group">
+        <label for="skills">Skills:</label>
+        <input type="text" class="form-control" id="skills" @bind="NewEmployee.Skills" />
+    </div> *@
+
+    <button type="button" class="btn btn-primary" @onclick="AddEmployee">Add Employee</button>
+</form>
+
+@if (IsEmployeeAdded)
+{
+    <p class="text-success">Employee added successfully!</p>
+}
+
+@code {
+    private Employee NewEmployee = new Employee(); // Assumes you have an Employee entity
+    private bool IsEmployeeAdded = false;
+
+    
+    private async Task AddEmployee()
+    {
+        int affectedRows = await EmployeeService.InsertEmployeeAsync(
+            NewEmployee.Ename,
+            NewEmployee.DeptName,
+            NewEmployee.Age,
+            NewEmployee.Salary,
+            NewEmployee.Skills
+        );
+
+        if (affectedRows > 0)
+        {
+            IsEmployeeAdded = true;
+            // Optionally, you can reset the form or do any other necessary actions after successful insertion
+            NewEmployee = new Employee();
+
+            // // Navigate to another page (replace "/target-page" with your desired target page)
+             NavigationManager.NavigateTo("/fetchdataEmp");
+        }
+    }
+}
