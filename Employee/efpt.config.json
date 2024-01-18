@@ -20,6 +20,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[EmployeeSkill]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Skill]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[DeletedRecords]",
          "ObjectType": 1
       },
@@ -29,6 +37,10 @@
       },
       {
          "Name": "[dbo].[GetAllEmployees]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAllSkills]",
          "ObjectType": 1
       },
       {
@@ -48,6 +60,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[GetEmployeeWithSkills]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[GetPagedCount]",
          "ObjectType": 1
       },
@@ -57,6 +73,10 @@
       },
       {
          "Name": "[dbo].[GetPagedEmployee]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetSkillsForEmployee]",
          "ObjectType": 1
       },
       {

@@ -15,13 +15,16 @@ namespace Employee.Models
         Task<List<DeletedRecordsResult>> DeletedRecordsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> DeleteEmployeeAsync(int? EmpID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetAllEmployeesResult>> GetAllEmployeesAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<GetAllSkillsResult>> GetAllSkillsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> GetBackDeletedRecordAsync(int? EmpID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetDeletedRecordsResult>> GetDeletedRecordsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetEmployeeByResult>> GetEmployeeByAsync(int? EmpID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetEmployeeByIdResult>> GetEmployeeByIdAsync(int? EmpId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<GetEmployeeWithSkillsResult>> GetEmployeeWithSkillsAsync(int? EmpId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetPagedCountResult>> GetPagedCountAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetPagedEmpResult>> GetPagedEmpAsync(int? Offset, int? PageSize, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetPagedEmployeeResult>> GetPagedEmployeeAsync(int? Offset, int? PageSize, bool? IsDeleted, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<GetSkillsForEmployeeResult>> GetSkillsForEmployeeAsync(int? EmpID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> InsertEmployeeAsync(string EName, string DeptName, int? Age, int? Salary, string Skills, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> SoftDeleteRecordAsync(int? EmpID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> UpdateEmpAsync(int? EmpID, string EName, string DeptName, int? Age, int? Salary, string Skills, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);

@@ -36,12 +36,15 @@ namespace Employee.Models
         {
             modelBuilder.Entity<DeletedRecordsResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetAllEmployeesResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<GetAllSkillsResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetDeletedRecordsResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetEmployeeByResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetEmployeeByIdResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<GetEmployeeWithSkillsResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetPagedCountResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetPagedEmpResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<GetPagedEmployeeResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<GetSkillsForEmployeeResult>().HasNoKey().ToView(null);
         }
     }
 
@@ -114,6 +117,26 @@ namespace Employee.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<GetAllEmployeesResult>("EXEC @returnValue = [dbo].[GetAllEmployees]", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<GetAllSkillsResult>> GetAllSkillsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<GetAllSkillsResult>("EXEC @returnValue = [dbo].[GetAllSkills]", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -218,6 +241,32 @@ namespace Employee.Models
             return _;
         }
 
+        public virtual async Task<List<GetEmployeeWithSkillsResult>> GetEmployeeWithSkillsAsync(int? EmpId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "EmpId",
+                    Value = EmpId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<GetEmployeeWithSkillsResult>("EXEC @returnValue = [dbo].[GetEmployeeWithSkills] @EmpId", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<GetPagedCountResult>> GetPagedCountAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
@@ -302,6 +351,32 @@ namespace Employee.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<GetPagedEmployeeResult>("EXEC @returnValue = [dbo].[GetPagedEmployee] @Offset, @PageSize, @IsDeleted", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<GetSkillsForEmployeeResult>> GetSkillsForEmployeeAsync(int? EmpID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "EmpID",
+                    Value = EmpID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<GetSkillsForEmployeeResult>("EXEC @returnValue = [dbo].[GetSkillsForEmployee] @EmpID", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

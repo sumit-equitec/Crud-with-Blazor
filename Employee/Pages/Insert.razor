@@ -1,35 +1,39 @@
-﻿@page "/insert"
+﻿
+@page "/insert"
 <PageTitle>Employee List</PageTitle>
 
 @using Employee.Models;
 @using Employee.Data;
+@using Microsoft.AspNetCore.Components;
 @inject EmployeeService EmployeeService;
 @inject NavigationManager NavigationManager;
 
-<form>
+<EditForm Model="NewEmployee" OnValidSubmit="AddEmployee">
+    <DataAnnotationsValidator />
     <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" @bind="NewEmployee.Ename" />
+        <InputText class="form-control" id="name" @bind-Value="NewEmployee.Ename" />
+        <ValidationMessage For="@(() => NewEmployee.Ename)" />
     </div>
     <div class="form-group">
         <label for="department">Department:</label>
-        <input type="text" class="form-control" id="department" @bind="NewEmployee.DeptName" />
+        <InputText class="form-control" id="department" @bind-Value="NewEmployee.DeptName" />
+        <ValidationMessage For="@(() => NewEmployee.DeptName)" />
     </div>
     <div class="form-group">
         <label for="age">Age:</label>
-        <input type="number" class="form-control" id="age" @bind="NewEmployee.Age" />
+        <InputNumber class="form-control" id="age" @bind-Value="NewEmployee.Age" />
+        <ValidationMessage For="@(() => NewEmployee.Age)" />
     </div>
     <div class="form-group">
         <label for="salary">Salary:</label>
-        <input type="number" class="form-control" id="salary" @bind="NewEmployee.Salary" />
+        <InputNumber class="form-control" id="salary" @bind-Value="NewEmployee.Salary" />
+        <ValidationMessage For="@(() => NewEmployee.Salary)" />
     </div>
-   @*  <div class="form-group">
-        <label for="skills">Skills:</label>
-        <input type="text" class="form-control" id="skills" @bind="NewEmployee.Skills" />
-    </div> *@
 
-    <button type="button" class="btn btn-primary" @onclick="AddEmployee">Add Employee</button>
-</form>
+    <button type="submit" class="btn btn-primary">Add Employee</button>
+</EditForm>
+
 
 @if (IsEmployeeAdded)
 {
@@ -61,4 +65,13 @@
              NavigationManager.NavigateTo("/fetchdataEmp");
         }
     }
-}
+} 
+
+
+ 
+
+
+
+
+
+

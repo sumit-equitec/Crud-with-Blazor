@@ -1,4 +1,4 @@
-﻿@page "/update/{EmpId:int}"
+﻿@* @page "/update/{EmpId:int}"
 @using Employee.Models
 @using Employee.Data
 @inject EmployeeService EmployeeService
@@ -33,11 +33,60 @@
        @*  <div class="form-group">
             <label for="editEmployeeSkills">Skills:</label>
             <input id="editEmployeeSkills" @bind="employee.Skills" class="form-control" />
-        </div> *@
+        </div>
 
         <button type="button" class="btn btn-primary" @onclick="UpdateEmployee">Update Employee</button>
     </form>
+} *@
+
+@page "/update/{EmpId:int}"
+@using Employee.Models
+@using Employee.Data
+@using Microsoft.AspNetCore.Components;
+@inject EmployeeService EmployeeService
+@inject NavigationManager NavigationManager
+
+<h3>Update Employee</h3>
+
+@if (employee != null)
+{
+    <EditForm Model="employee" OnValidSubmit="UpdateEmployee">
+        <!-- Form fields for editing employee details -->
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label for="editEmployeeName">Employee Name:</label>
+            <InputText id="editEmployeeName" @bind-Value="employee.EName" class="form-control" />
+            <ValidationMessage For="@(() => employee.EName)" />
+        </div>
+
+        <div class="form-group">
+            <label for="editEmployeeDept">Department:</label>
+            <InputText id="editEmployeeDept" @bind-Value="employee.DeptName" class="form-control" />
+            <ValidationMessage For="@(() => employee.DeptName)" />
+        </div>
+
+        <div class="form-group">
+            <label for="editEmployeeAge">Age:</label>
+            <InputNumber id="editEmployeeAge" @bind-Value="employee.Age" class="form-control" />
+            <ValidationMessage For="@(() => employee.Age)" />
+        </div>
+
+        <div class="form-group">
+            <label for="editEmployeeSalary">Salary:</label>
+            <InputNumber id="editEmployeeSalary" @bind-Value="employee.Salary" class="form-control" />
+            <ValidationMessage For="@(() => employee.Salary)" />
+        </div>
+
+        @*  <div class="form-group">
+    <label for="editEmployeeSkills">Skills:</label>
+    <InputText id="editEmployeeSkills" @bind-Value="employee.Skills" class="form-control" />
+    </div> *@
+
+        <button type="submit" class="btn btn-primary">Update Employee</button>
+    </EditForm>
 }
+
+
 else
 {
     <p>Loading...</p>

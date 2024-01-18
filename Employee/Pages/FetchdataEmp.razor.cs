@@ -7,13 +7,25 @@ namespace Employee.Pages
     public partial class FetchdataEmp
     {
 
-        private List<GetAllEmployeesResult>? Employees; // Remove nullable operator
+        private List<GetAllEmployeesResult>? Employees;
+        private List<GetEmployeeWithSkillsResult>? Skills;// Remove nullable operator
+        public Dictionary<int,string> Result=new Dictionary<int,string>();
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 Employees = await EmployeeService.Get();
+                foreach (var employee in Employees)
+                {
+                    Skills = await EmployeeService.GetAllSkills(employee.EmpID);
+                   
+                        var user = Skills.Select(sk => sk.SkillName);
+                        Result[employee.EmpID] = string.Join(", ", user);
+                    
+                }
+
+
             }
             catch (Exception ex)
             {

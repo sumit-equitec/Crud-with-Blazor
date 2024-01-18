@@ -11,13 +11,29 @@ namespace Employee.Data
             _employee = employee;
         }
 
+        //public async Task<List<Models.GetAllEmployeesResult>> Get()
+        //{
+        //    List<Models.GetAllEmployeesResult> employees = await _employee.Procedures.GetAllEmployeesAsync();
+        //    return employees;
+        //}
+
         public async Task<List<Models.GetAllEmployeesResult>> Get()
         {
-            List<Models.GetAllEmployeesResult> employees = await _employee.Procedures.GetAllEmployeesAsync();
-            return employees;
-        }
+                List<GetAllEmployeesResult> rawData = await _employee.Procedures.GetAllEmployeesAsync();
 
-        public async Task<Models.GetEmployeeByIdResult> GetEmpByID(int ID)
+                return rawData;
+            }
+
+    public async Task<List<GetEmployeeWithSkillsResult>> GetAllSkills(int EmpId)
+    {
+        // Call your stored procedure or SQL query to get data
+        return await _employee.Procedures.GetEmployeeWithSkillsAsync(EmpId);
+
+        // Transform raw data to your custom model
+       
+    }
+
+    public async Task<Models.GetEmployeeByIdResult> GetEmpByID(int ID)
         {
             List<Models.GetEmployeeByIdResult> employee = await _employee.Procedures.GetEmployeeByIdAsync(ID);
             return employee.FirstOrDefault();
@@ -29,7 +45,7 @@ namespace Employee.Data
         //}
 
         // Method to insert a new employee
-        public async Task<int> InsertEmployeeAsync(string name, string department, int? age, int? salary, string skills)
+        public async Task<int> InsertEmployeeAsync(string name, string department, int age, int salary, string skills)
         {
             try
             {
@@ -45,6 +61,8 @@ namespace Employee.Data
                 throw; // Rethrow the exception if needed
             }
         }
+
+
 
         public async Task<int> DeleteRecord(int EmpID)
         {

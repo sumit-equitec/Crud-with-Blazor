@@ -13,11 +13,13 @@ public partial class Employee
 
     public string DeptName { get; set; }
 
-    public int? Age { get; set; }
+    public int Age { get; set; }
 
-    public int? Salary { get; set; }
+    public int Salary { get; set; }
 
     public bool? IsDeleted { get; set; }
 
     public string Skills { get; set; }
+
+    public virtual ICollection<Skill> SkillsNavigation { get; set; } = new List<Skill>();
 }
