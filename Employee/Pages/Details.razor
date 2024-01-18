@@ -19,6 +19,8 @@
         <dd>@employeeDetails.Age</dd>
         <dt>Salary:</dt>
         <dd>@employeeDetails.Salary</dd>
+        <dt>Skills:</dt>
+        <td>@Result[employeeDetails.EmpID]</td>
         <!-- Add more details as needed -->
     </dl>
 }
@@ -33,12 +35,20 @@ else
     [Parameter]
     public int EmpId { get; set; }
 
+    private List<GetEmployeeWithSkillsResult>? Skills;// Remove nullable operator
+    public Dictionary<int, string> Result = new Dictionary<int, string>();
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             // Fetch the employee details when the component is initialized
             employeeDetails = await EmployeeService.GetEmployeeDetailsAsync(EmpId);
+
+            Skills = await EmployeeService.GetAllSkills(EmpId);
+            var user = Skills.Select(sk => sk.SkillName);
+            Result[employeeDetails.EmpID] = string.Join(", ", user);
+
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
 ﻿using Employee.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Employee.Data
 {
@@ -19,21 +20,30 @@ namespace Employee.Data
 
         public async Task<List<Models.GetAllEmployeesResult>> Get()
         {
-                List<GetAllEmployeesResult> rawData = await _employee.Procedures.GetAllEmployeesAsync();
+            List<GetAllEmployeesResult> rawData = await _employee.Procedures.GetAllEmployeesAsync();
 
-                return rawData;
-            }
+            return rawData;
+        }
 
-    public async Task<List<GetEmployeeWithSkillsResult>> GetAllSkills(int EmpId)
-    {
-        // Call your stored procedure or SQL query to get data
-        return await _employee.Procedures.GetEmployeeWithSkillsAsync(EmpId);
+        public async Task<List<GetEmployeeWithSkillsResult>> GetAllSkills(int EmpId)
+        {
+            // Call your stored procedure or SQL query to get data
+            return await _employee.Procedures.GetEmployeeWithSkillsAsync(EmpId);
 
-        // Transform raw data to your custom model
-       
-    }
+            // Transform raw data to your custom model
 
-    public async Task<Models.GetEmployeeByIdResult> GetEmpByID(int ID)
+        }
+
+        public async Task<List<GetAllSkillsResult>> GetSkillsOnly()
+        {
+            // Call your stored procedure or SQL query to get data
+            return await _employee.Procedures.GetAllSkillsAsync();
+
+            // Transform raw data to your custom model
+
+        }
+
+        public async Task<Models.GetEmployeeByIdResult> GetEmpByID(int ID)
         {
             List<Models.GetEmployeeByIdResult> employee = await _employee.Procedures.GetEmployeeByIdAsync(ID);
             return employee.FirstOrDefault();
@@ -45,12 +55,31 @@ namespace Employee.Data
         //}
 
         // Method to insert a new employee
-        public async Task<int> InsertEmployeeAsync(string name, string department, int age, int salary, string skills)
+        private List<GetAllEmployeesResult>? Employees;
+        public async Task<int> InsertEmployee(string name, string department, int age, int salary, string skills, List<int> skillIds)
         {
             try
             {
                 // Call the stored procedure or SQL query to insert the employee
                 int affectedRows = await _employee.Procedures.InsertEmployeeAsync(name, department, age, salary, skills);
+
+                int EmpId = 0;
+                foreach (var employee in skillIds)
+                {
+                    Employees = await _employee.Procedures.GetAllEmployeesAsync();
+
+                    var employeeId = Employees.Where(emp => emp.EName == name && emp.DeptName == department && emp.Age == age && emp.Salary == salary) // Apply the 'Where' condition
+                      .Select(emp => emp.EmpID).FirstOrDefault();
+                    EmpId = employeeId;
+                    break;
+
+
+
+                }
+                foreach (var skillId in skillIds)
+                {
+                    await _employee.Procedures.InsertEmployeeSkillByIdAsync(EmpId, skillId);
+                }
 
                 return affectedRows;
             }
@@ -61,6 +90,35 @@ namespace Employee.Data
                 throw; // Rethrow the exception if needed
             }
         }
+
+        public async Task<List<Skill>> GetAllSkills()
+        {
+            return await _employee.Skills.ToListAsync();
+        }
+
+
+        //public async Task<int> InsertEmployee(int EmpId, string name, string department, int age, int salary, string skill)
+        //{
+        //    try
+        //    {
+        //        // Call the stored procedure or SQL query to insert the employee
+        //        int employeeId = await _employee.Procedures.InsertEmployeeAsync(name, department, age, salary, skill);
+
+        //        // Insert selected skills into the EmployeeSkill table
+        //        foreach (var skillId in selectedSkillIds)
+        //        {
+        //            await _employee.Procedures.InsertEmployeeSkillAsync(EmpId, skillId);
+        //        }
+
+        //        return employeeId; // Return the newly inserted employee ID
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle the exception (log, notify, etc.)
+        //        Console.WriteLine($"An error occurred while inserting an employee: {ex.Message}");
+        //        throw; // Rethrow the exception if needed
+        //    }
+        //}
 
 
 
@@ -87,8 +145,8 @@ namespace Employee.Data
             return employees;
         }
 
-        
-         public async Task<int> GetBackEmployee(int EmpID)
+
+        public async Task<int> GetBackEmployee(int EmpID)
         {
             try
             {
@@ -110,7 +168,7 @@ namespace Employee.Data
             try
             {
                 // Call the stored procedure or SQL query to delete the employee
-                int affectedRows = await _employee.Procedures.UpdateEmpAsync(EmpID, EName, DeptName,Age, Salary, Skills);
+                int affectedRows = await _employee.Procedures.UpdateEmpAsync(EmpID, EName, DeptName, Age, Salary, Skills);
 
                 return affectedRows;
             }

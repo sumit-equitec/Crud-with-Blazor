@@ -2,19 +2,30 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Employee.Models;
 
 public partial class Employee
 {
+    [Required(ErrorMessage = "Employee ID is required.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Employee ID must be a positive integer.")]
     public int EmpId { get; set; }
 
+    [Required(ErrorMessage = "Employee Name is required.")]
+    [StringLength(50, ErrorMessage = "Employee Name must not exceed 50 characters.")]
     public string Ename { get; set; }
 
+    [Required(ErrorMessage = "Department Name is required.")]
+    [StringLength(50, ErrorMessage = "Department Name must not exceed 50 characters.")]
     public string DeptName { get; set; }
 
+    [Required(ErrorMessage = "Age is required.")]
+    [Range(18, 99, ErrorMessage = "Age must be between 18 and 99.")]
     public int Age { get; set; }
 
+    [Required(ErrorMessage = "Salary is required.")]
+    [Range(0, int.MaxValue, ErrorMessage = "Salary must be a non-negative value.")]
     public int Salary { get; set; }
 
     public bool? IsDeleted { get; set; }

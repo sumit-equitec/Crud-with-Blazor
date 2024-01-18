@@ -64,6 +64,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[GetIdByField]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[GetPagedCount]",
          "ObjectType": 1
       },
@@ -76,11 +80,23 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[GetSkillIdByName]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[GetSkillsForEmployee]",
          "ObjectType": 1
       },
       {
          "Name": "[dbo].[InsertEmployee]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InsertEmployeeSkill]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InsertEmployeeSkillById]",
          "ObjectType": 1
       },
       {
