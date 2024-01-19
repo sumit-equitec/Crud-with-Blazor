@@ -1,11 +1,12 @@
 ﻿@page "/insert"
-<PageTitle>Employee List</PageTitle>
+<PageTitle>Insert Employee</PageTitle>
 
 @using Employee.Models;
 @using Employee.Data;
 @using Microsoft.AspNetCore.Components;
 @inject EmployeeService EmployeeService;
 @inject NavigationManager NavigationManager;
+
 
 <EditForm Model="NewEmployee" OnValidSubmit="AddEmployee">
     <DataAnnotationsValidator />
@@ -43,8 +44,68 @@
         }
     </div>
 
-    <button type="submit" class="btn btn-primary" @onclick="AddEmployee">Add Employee</button>
+    <button type="submit" class="btn btn-primary">Add Employee</button>
+
+   
 </EditForm>
+
+@* <EditForm Model="NewEmployee" OnSubmit="AddEmployee">
+    <DataAnnotationsValidator />
+    <ul class="row forumBox">
+        <li class="col-3 required">
+            <label class="inputLabel">Name:</label>
+        </li>
+        <li class="col-3">
+            <div class="form_inputBox">
+                <InputText @bind-Value="NewEmployee.Ename" class="form-control" maxlength="20" />
+            </div>
+            <div class="erroeText">
+                <ValidationMessage For="(() => NewEmployee.Ename)"></ValidationMessage>
+            </div>
+        </li>
+
+        <li class="col-3 required">
+            <label class="inputLabel">Department:</label>
+        </li>
+        <li class="col-3">
+            <div class="form_inputBox">
+                <InputText @bind-Value="NewEmployee.DeptName" class="form-control" maxlength="20" />
+            </div>
+            <div class="erroeText">
+                <ValidationMessage For="(() => NewEmployee.DeptName)"></ValidationMessage>
+            </div>
+        </li>
+
+        
+         <li class="col-3 required">
+            <label class="inputLabel">Age:</label>
+        </li>
+        <li class="col-3">
+            <div class="form_inputBox">
+                <InputNumber @bind-Value="NewEmployee.Age" class="form-control" maxlength="20" />
+            </div>
+            <div class="erroeText">
+                <ValidationMessage For="(() => NewEmployee.Age)"></ValidationMessage>
+            </div>
+        </li>
+
+        <li class="col-3 required">
+            <label class="inputLabel">Salary:</label>
+        </li>
+        <li class="col-3">
+            <div class="form_inputBox">
+                <InputNumber @bind-Value="NewEmployee.Age" class="form-control" maxlength="20" />
+            </div>
+            <div class="erroeText">
+                <ValidationMessage For="(() => NewEmployee.Age)"></ValidationMessage>
+            </div>
+        </li>
+
+        
+    </ul>
+
+</EditForm> *@
+
 
 @if (IsEmployeeAdded)
 {
@@ -55,15 +116,14 @@
     private List<GetAllSkillsResult> allSkills = new List<GetAllSkillsResult>();
     private Employee NewEmployee = new Employee();
     private bool IsEmployeeAdded = false;
-    
-
     private List<int> selectedSkills = new List<int>();
-    
+
     protected override async Task OnInitializedAsync()
     {
         // Fetch the list of available skills from the service
         allSkills = await EmployeeService.GetSkillsOnly();
     }
+
     private void ToggleSkill(int skillId)
     {
         if (selectedSkills.Contains(skillId))
@@ -72,21 +132,18 @@
             selectedSkills.Add(skillId);
     }
 
-
     private async Task AddEmployee()
     {
         // Convert the selected skills to a comma-separated string
-        
-        
+        NewEmployee.Skills = string.Join(",", selectedSkills);
+
         int affectedRows = await EmployeeService.InsertEmployee(
-            
             NewEmployee.Ename,
             NewEmployee.DeptName,
             NewEmployee.Age,
             NewEmployee.Salary,
             NewEmployee.Skills,
             selectedSkills
-            
         );
 
         if (affectedRows > 0)
@@ -94,10 +151,8 @@
             IsEmployeeAdded = true;
             // Optionally, you can reset the form or do any other necessary actions after successful insertion
             NewEmployee = new Employee();
-
-            // Navigate to another page (replace "/target-page" with your desired target page)
+            // Navigate to another page
             NavigationManager.NavigateTo("/fetchdataEmp");
         }
     }
 }
-

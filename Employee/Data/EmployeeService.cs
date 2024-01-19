@@ -162,13 +162,32 @@ namespace Employee.Data
                 throw; // Rethrow the exception if needed
             }
         }
-
-        public async Task<int> Update(int EmpID, string EName, string DeptName, int? Age, int? Salary, string Skills)
+        private List<GetAllEmployeesResult>? Employees1;
+        public async Task<int> Update(int EmpID, string EName, string DeptName, int? Age, int? Salary, string Skills, List<int>? skillIds)
         {
             try
             {
                 // Call the stored procedure or SQL query to delete the employee
                 int affectedRows = await _employee.Procedures.UpdateEmpAsync(EmpID, EName, DeptName, Age, Salary, Skills);
+
+                await _employee.Procedures.DeletPastSkillsAsync(EmpID);
+                int EmpId = 0;
+                foreach (var employee in skillIds)
+                {
+                    Employees1 = await _employee.Procedures.GetAllEmployeesAsync();
+
+                    var employeeId = Employees1.Where(emp => emp.EName == EName && emp.DeptName == DeptName && emp.Age == Age && emp.Salary == Salary) // Apply the 'Where' condition
+                      .Select(emp => emp.EmpID).FirstOrDefault();
+                    EmpId = employeeId;
+                    break;
+
+
+
+                }
+                foreach (var skillId in skillIds)
+                {
+                    await _employee.Procedures.InsertEmployeeSkillByIdAsync(EmpId, skillId);
+                }
 
                 return affectedRows;
             }
@@ -179,8 +198,6 @@ namespace Employee.Data
                 throw; // Rethrow the exception if needed
             }
         }
-
-        // Inside your EmployeeService class
         public async Task<GetEmployeeByResult?> GetEmployeeDetailsAsync(int empId)
         {
             // Call your stored procedure or data access method to get details by ID
@@ -188,6 +205,16 @@ namespace Employee.Data
 
             // Return the first item or null if the list is empty
             return details.FirstOrDefault();
+        }
+
+        // Inside your EmployeeService class
+        public async Task<List<GetSelectedSkillsResult?>> GetSelectSkills(int empId)
+        {
+            // Call your stored procedure or data access method to get details by ID
+            List<GetSelectedSkillsResult> details = await _employee.Procedures.GetSelectedSkillsAsync(empId);
+
+            // Return the first item or null if the list is empty
+            return details;
         }
     }
 }

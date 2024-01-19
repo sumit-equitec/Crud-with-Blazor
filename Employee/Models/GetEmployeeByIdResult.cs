@@ -8,7 +8,7 @@ namespace Employee.Models
 {
     public partial class GetEmployeeByIdResult
     {
-        [Required(ErrorMessage = "Employee ID is required.")]
+
         public int EmpID { get; set; }
 
         [Required(ErrorMessage = "Employee Name is required.")]

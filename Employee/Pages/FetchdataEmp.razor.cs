@@ -9,7 +9,7 @@ namespace Employee.Pages
 
         private List<GetAllEmployeesResult>? Employees;
         private List<GetEmployeeWithSkillsResult>? Skills;// Remove nullable operator
-        public Dictionary<int,string> Result=new Dictionary<int,string>();
+        public Dictionary<int,string> Result=new();
 
         protected override async Task OnInitializedAsync()
         {

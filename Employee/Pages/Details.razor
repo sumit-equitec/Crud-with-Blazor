@@ -23,6 +23,8 @@
         <td>@Result[employeeDetails.EmpID]</td>
         <!-- Add more details as needed -->
     </dl>
+
+    <button type="button" class="btn btn-danger" @onclick="() => CancelEmployee()">Back</button>
 }
 else
 {
@@ -56,5 +58,12 @@ else
             Console.WriteLine($"Error fetching employee details: {ex.Message}");
         }
     }
+    private async Task CancelEmployee()
+    {
+        NavigationManager.NavigateTo("detailsPage");
+
+    }
+
+
 }
 

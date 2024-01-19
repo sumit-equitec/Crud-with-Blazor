@@ -1,0 +1,136 @@
+﻿@page "/detailsPage"
+<PageTitle>Employee List</PageTitle>
+
+@using Employee.Models;
+@using Employee.Data;
+@inject EmployeeService EmployeeService;
+@inject NavigationManager NavigationManager;
+
+<h1>Employee List</h1>
+
+@* <p>This component demonstrates fetching data from a service.</p>
+<span style="display: inline-block; margin-right: 10px;"><a href="insert" class="btn btn-primary">Insert</a></span>
+<span style="display: inline-block; margin-right: 10px;"><a href="getDeletedRecords" class="btn btn-primary">Deleted Records</a></span> *@
+
+
+@if (Employees == null)
+{
+    <p><em>Fetching data...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Department Name</th>
+                <th>Age</th>
+                <th>Salary</th>
+                <th>Skills</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Employees.Any())
+            {
+                @foreach (var forecast in Employees)
+                {
+                    <tr>
+                        <td>@forecast.EmpID</td>
+                        <td>@forecast.EName</td>
+                        <td>@forecast.DeptName</td>
+                        <td>@(forecast.Age)</td>
+                        <td>@(forecast.Salary)</td>
+                        <td>@Result[forecast.EmpID]</td>
+                       
+                         <button type="button" class="btn" @onclick="() => DetailEmployee(forecast.EmpID)">Details</button> 
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code
+{
+    private List<GetAllEmployeesResult>? Employees;
+    private List<GetEmployeeWithSkillsResult>? Skills;// Remove nullable operator
+    public Dictionary<int, string> Result = new Dictionary<int, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Employees = await EmployeeService.Get();
+            foreach (var employee in Employees)
+            {
+                Skills = await EmployeeService.GetAllSkills(employee.EmpID);
+
+                var user = Skills.Select(sk => sk.SkillName);
+                Result[employee.EmpID] = string.Join(", ", user);
+
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+            // Handle exception (log, display error, etc.)
+            Console.WriteLine($"An error occurred while fetching employees: {ex.Message}");
+        }
+
+    }
+
+
+    private async Task DeleteEmployee(int employeeId)
+    {
+
+        // int affectedRows = await EmployeeService.DeleteRecord(employeeId);
+
+
+
+        // Employees = await EmployeeService.Get();
+
+        NavigationManager.NavigateTo($"/confirmDelete/{employeeId}");
+
+    }
+
+
+
+    private async Task UpdateEmployee(int EmpId)
+    {
+        // Show confirmation dialog if needed...
+
+        // Call the DeleteEmployeeAsync method from EmployeeService
+        NavigationManager.NavigateTo($"/update/{EmpId}");
+
+        // After deletion, refresh the employee list
+
+
+    }
+
+    private async Task DetailEmployee(int EmpId)
+    {
+        // Show confirmation dialog if needed...
+
+        // Call the DeleteEmployeeAsync method from EmployeeService
+        NavigationManager.NavigateTo($"/details/{EmpId}");
+
+        // After deletion, refresh the employee list
+
+
+    }
+
+
+
+
+
+}

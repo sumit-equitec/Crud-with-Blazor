@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Employee</a>
+        <a class="navbar-brand" href=""></a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,12 +10,12 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
+        @*  <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
+     <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
                 <span class="oi oi-plus" aria-hidden="true"></span> Counter
             </NavLink>
@@ -29,17 +29,72 @@
             <NavLink class="nav-link" href="fetchdataEmp">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data of Employee
             </NavLink>
+        </div> *@
+        <div><pre>                         </pre></div>
+
+
+        <div class="sidebar_list my-scrollbar">
+            <div class="rightBox">
+                <h6 class="color_white bg_accent sidebar_dropdown has_list " style="color:white" @onclick="ToggleDropdown"><a href="javascript:void(0);" class="white_arrow_drpdwn" style="color:white"></a><span class="oi oi-home" aria-hidden="true"></span>Employee</h6>
+                <div class="dropdown-content" style="display:@listDisplay ">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="fetchdataEmp">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Employee Details
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="insert">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Add Employee
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="updateRecords">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Update Employee
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="detailsPage">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Details
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="deleteRecords">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Delete Employee
+                        </NavLink>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="getDeletedRecords">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span>Get Deleted Records
+                        </NavLink>
+                    </div>
+
+                </div>
+            </div>
+
+
         </div>
+
     </nav>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
-
+    private bool showList = false;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    private void ToggleDropdown()
+    {
+        showList = !showList;
+    }
+
+    private string listDisplay => showList ? "block" : "none";
 }

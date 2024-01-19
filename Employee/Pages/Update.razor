@@ -77,13 +77,28 @@
             <ValidationMessage For="@(() => employee.Salary)" />
         </div>
 
+        <div class="form-group">
+            <label>Skills:</label>
+            @foreach (var skill in allSkills)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="@($"chk_{skill.SkillID}")"
+                           checked="@selectedSkills.Contains(skill.SkillID)"
+                           @onchange="@(e => ToggleSkill(skill.SkillID))" />
+                    <label class="form-check-label" for="@($"chk_{skill.SkillID}")">@skill.SkillName</label>
+                </div>
+            }
+        </div>
+
         @*  <div class="form-group">
     <label for="editEmployeeSkills">Skills:</label>
     <InputText id="editEmployeeSkills" @bind-Value="employee.Skills" class="form-control" />
     </div> *@
 
         <button type="submit" class="btn btn-primary">Update Employee</button>
+        <button type="button" class="btn btn-danger" @onclick="() => CancelEmployee()">Back</button>
     </EditForm>
+    
 }
 
 
@@ -94,6 +109,8 @@ else
 
 @code {
     private GetEmployeeByIdResult employee;
+    private List<GetAllSkillsResult> allSkills = new List<GetAllSkillsResult>();
+    private List<int> selectedSkills = new List<int>();
 
     [Parameter]
     public int EmpId { get; set; }
@@ -104,12 +121,24 @@ else
         {
             // Fetch the employee data when the component is initialized
             employee = await EmployeeService.GetEmpByID(EmpId);
+            allSkills = await EmployeeService.GetSkillsOnly();
+            List<GetSelectedSkillsResult> selectedSkillsResult = await EmployeeService.GetSelectSkills(EmpId);
+            selectedSkills = selectedSkillsResult.Select(skill => skill.SkillId).ToList();
+
         }
         catch (Exception ex)
         {
             // Handle the exception, for example, navigate to an error page
             Console.WriteLine($"Error fetching employee data: {ex.Message}");
         }
+    }
+
+    private void ToggleSkill(int skillId)
+    {
+        if (selectedSkills.Contains(skillId))
+            selectedSkills.Remove(skillId);
+        else
+            selectedSkills.Add(skillId);
     }
 
     private async Task UpdateEmployee()
@@ -123,22 +152,30 @@ else
                 employee.DeptName,
                 employee.Age,
                 employee.Salary,
-                employee.Skills);
-            NavigationManager.NavigateTo("/fetchdataEmp");
-            if (result > 0)
-            {
-                // Successful update, navigate to employee list page
-                NavigationManager.NavigateTo("/fetchdataEmp");
-            }
-            else
-            {
-                // Handle failure scenario
-                Console.WriteLine("Update failed");
-            }
+                employee.Skills,
+                selectedSkills
+            );
+            NavigationManager.NavigateTo("/updateRecords");
+            // if (result > 0)
+            // {
+            //     // Successful update, navigate to employee list page
+            //     NavigationManager.NavigateTo("/fetchdataEmp");
+            // }
+            // else
+            // {
+            //     // Handle failure scenario
+            //     Console.WriteLine("Update failed");
+            // }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error updating employee: {ex.Message}");
         }
+    }
+
+    private async Task CancelEmployee()
+    {
+        NavigationManager.NavigateTo("updateRecords");
+
     }
 }

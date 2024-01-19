@@ -1,0 +1,89 @@
+﻿@page "/confirmDelete/{EmpId:int}"
+@using Employee.Models
+@using Employee.Data
+@inject EmployeeService EmployeeService
+@inject NavigationManager NavigationManager
+
+<h3>Employee Details</h3>
+
+@if (employeeDetails != null)
+{
+    <dl>
+        <dt>Employee ID:</dt>
+        <dd>@employeeDetails.EmpID</dd>
+        <dt>Name:</dt>
+        <dd>@employeeDetails.EName</dd>
+        <dt>Department Name:</dt>
+        <dd>@employeeDetails.DeptName</dd>
+        <dt>Age:</dt>
+        <dd>@employeeDetails.Age</dd>
+        <dt>Salary:</dt>
+        <dd>@employeeDetails.Salary</dd>
+        <dt>Skills:</dt>
+        <td>@Result[employeeDetails.EmpID]</td>
+        <!-- Add more details as needed -->
+    </dl>
+    <button type="button" class="btn btn-danger" @onclick="() => DeleteEmployee(employeeDetails.EmpID)">Delete</button>
+    <button type="button" class="btn btn-success" @onclick="() => CancelEmployee()">Cancel</button>
+}
+else
+{
+    <p>Employee not found.</p>
+}
+
+@code {
+    private GetEmployeeByResult? employeeDetails;
+
+    [Parameter]
+    public int EmpId { get; set; }
+
+    private List<GetEmployeeWithSkillsResult>? Skills;// Remove nullable operator
+    public Dictionary<int, string> Result = new Dictionary<int, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Fetch the employee details when the component is initialized
+            employeeDetails = await EmployeeService.GetEmployeeDetailsAsync(EmpId);
+
+            Skills = await EmployeeService.GetAllSkills(EmpId);
+            var user = Skills.Select(sk => sk.SkillName);
+            Result[employeeDetails.EmpID] = string.Join(", ", user);
+
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception, for example, navigate to an error page
+            Console.WriteLine($"Error fetching employee details: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteEmployee(int employeeId)
+    {
+
+         int affectedRows = await EmployeeService.DeleteRecord(employeeId);
+
+
+
+        
+
+        NavigationManager.NavigateTo("deleteRecords");
+
+    }
+
+    private async Task CancelEmployee()
+    {
+
+       
+
+
+
+
+
+        NavigationManager.NavigateTo("deleteRecords");
+
+    }
+}
+
+

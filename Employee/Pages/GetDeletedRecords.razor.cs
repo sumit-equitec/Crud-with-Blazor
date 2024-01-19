@@ -19,9 +19,15 @@ namespace Employee.Pages
             int affectedRows = await EmployeeService.GetBackEmployee(employeeId);
 
             // After deletion, refresh the employee list
+            //if(affectedRows>0)
+            //{
+            //    NavigationManager.NavigateTo("/fetchdataEmp");
+            //}
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
 
-            NavigationManager.NavigateTo("/fetchdataEmp");
 
         }
+
     }
+    
 }
